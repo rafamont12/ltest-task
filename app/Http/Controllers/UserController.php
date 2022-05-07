@@ -19,15 +19,8 @@ class UserController extends Controller
             return responder()->error(401, 'Wrong Credentials.');
         }
 
-        // Removing old tokens
-        if ($user->tokens->count() > 0) {
-            foreach ($user->tokens as $token) {
-                $token->delete();
-            }
-        }
-
-        return responder()->success([
-            'token' => $user->createToken('TokenApiBreakingBadTest')->plainTextToken
-        ]);
+        // Create and return Token
+        $token = $user->getBearerToken();
+        return responder()->success(['token' => $token]);
     }
 }

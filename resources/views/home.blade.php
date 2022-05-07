@@ -14,7 +14,19 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    @if(session('token'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('token') }}
+                        </div>
+                    @endif
+
+                    <form action="{{ route('user.get_token') }}" method="POST">
+                        @csrf
+                        @method('POST')
+                        <button class="btn btn-outline-success" type="submit">
+                            Get Token
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

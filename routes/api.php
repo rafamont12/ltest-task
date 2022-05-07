@@ -23,7 +23,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::middleware(['guest', 'throttle:3'])->group(function () {
-    Route::post('/token', [\App\Http\Controllers\UserController::class, 'getToken']);
+    Route::post('/token', [\App\Http\Controllers\UserController::class, 'getToken'])->name('user.get_token');
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
