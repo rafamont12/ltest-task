@@ -22,12 +22,22 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/episodes/', [EpisodeController::class, 'index']);
-Route::get('/episodes/{id}', [EpisodeController::class, 'show']);
+Route::middleware(['guest', 'throttle:3'])->group(function () {
+    Route::post('/token', [\App\Http\Controllers\UserController::class, 'getToken']);
+});
 
-Route::get('/characters/', [CharacterController::class, 'index']); // ?name={name}
-Route::get('/characters/random', [CharacterController::class, 'getRandomInstance']);
+Route::middleware(['auth:sanctum'])->group(function () {
+    // Episodes
+    Route::get('/episodes/', [EpisodeController::class, 'index']);
+    Route::get('/episodes/{id}', [EpisodeController::class, 'show']);
 
-Route::get('/quotes', [QuoteController::class, 'index']);
-Route::get('/quotes/random', [QuoteController::class, 'getRandomInstance']); // ?author={character_name}
+    // Characters
+    Route::get('/characters/', [CharacterController::class, 'index']); // ?name={name}
+    Route::get('/characters/random', [CharacterController::class, 'getRandomInstance']);
+
+    // Quotes
+    Route::get('/quotes', [QuoteController::class, 'index']);
+    Route::get('/quotes/random', [QuoteController::class, 'getRandomInstance']); // ?author={character_name}
+});
+
 
