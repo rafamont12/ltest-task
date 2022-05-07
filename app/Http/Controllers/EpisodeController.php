@@ -3,83 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Models\Episode;
+use Flugg\Responder\Http\Responses\SuccessResponseBuilder;
 use Illuminate\Http\Request;
 
-class EpisodeController extends Controller
+class EpisodeController extends BaseController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return SuccessResponseBuilder
      */
     public function index()
     {
-        //
+        $data = Episode::paginate($this->limit);
+
+        return responder()->success($data);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show resource by id.
      *
-     * @return \Illuminate\Http\Response
+     * @param  int  $id
+     * @return SuccessResponseBuilder
      */
-    public function create()
+    public function show(int $id)
     {
-        //
-    }
+        $items = Episode::findOrFail($id);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Episode  $episode
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Episode $episode)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Episode  $episode
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Episode $episode)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Episode  $episode
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Episode $episode)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Episode  $episode
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Episode $episode)
-    {
-        //
+        return responder()->success($items)->with('characters');
     }
 }

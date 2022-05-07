@@ -22,7 +22,7 @@ class QuoteFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'quote' => $this->faker->sentence(rand(1, 15)),
         ];
     }
 }

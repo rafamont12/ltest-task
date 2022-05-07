@@ -15,8 +15,8 @@ class CreateCharacterEpisodeTable extends Migration
     {
         Schema::create('character_episode', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('character_id');
-            $table->unsignedInteger('episode_id');
+            $table->unsignedBigInteger('character_id');
+            $table->unsignedBigInteger('episode_id');
             $table->timestamps();
 
             // Foreign

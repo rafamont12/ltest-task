@@ -3,83 +3,42 @@
 namespace App\Http\Controllers;
 
 use App\Models\Quote;
+use Flugg\Responder\Http\Responses\SuccessResponseBuilder;
 use Illuminate\Http\Request;
 
-class QuoteController extends Controller
+class QuoteController extends BaseController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return SuccessResponseBuilder
      */
     public function index()
     {
-        //
+        $data = Quote::paginate($this->limit);
+
+        return responder()->success($data);
     }
 
     /**
-     * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     *
+     * @param  Request $request
+     * @return SuccessResponseBuilder
      */
-    public function create()
+    public function getRandomInstance(Request $request)
     {
-        //
-    }
+        $query = Quote::query();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        // Searching random quote by an author name [if requested]
+        if ($request->has('author')) {
+            $query->whereHas('character', function ($q) use ($request) {
+                $q->where('name', 'like', "%{$request->author}%");
+            });
+        }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Quote  $quote
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Quote $quote)
-    {
-        //
-    }
+        $data = $query->inRandomOrder()->firstOrFail();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Quote  $quote
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Quote $quote)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Quote  $quote
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Quote $quote)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Quote  $quote
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Quote $quote)
-    {
-        //
+        return responder()->success($data);
     }
 }

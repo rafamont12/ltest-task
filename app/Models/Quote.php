@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Transformers\QuoteTransformer;
+use Flugg\Responder\Contracts\Transformable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Quote extends Model
+class Quote extends Model implements Transformable
 {
     use HasFactory;
 
@@ -33,5 +35,15 @@ class Quote extends Model
     public function episode()
     {
         return $this->belongsTo(Episode::class);
+    }
+
+    /**
+     * Transformer of the model for API responses.
+     *
+     * @return string
+     */
+    public function transformer()
+    {
+        return QuoteTransformer::class;
     }
 }
