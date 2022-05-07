@@ -15,9 +15,7 @@
                     @endif
 
                     @if(session('token'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('token') }}
-                        </div>
+                        <div class="alert alert-success" role="alert">{{ session('token') }}</div>
                     @endif
 
                     <form action="{{ route('user.get_token') }}" method="POST">

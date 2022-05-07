@@ -26,7 +26,7 @@ Route::middleware(['guest', 'throttle:3'])->group(function () {
     Route::post('/token', [\App\Http\Controllers\UserController::class, 'getToken'])->name('user.get_token');
 });
 
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth:sanctum', 'throttle:' . config('api.requests_per_minute')])->group(function () {
     // Episodes
     Route::get('/episodes/', [EpisodeController::class, 'index']);
     Route::get('/episodes/{id}', [EpisodeController::class, 'show']);
