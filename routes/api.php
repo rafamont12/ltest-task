@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EpisodeController;
 use App\Http\Controllers\CharacterController;
 use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\StatisticController;
 
 
 /*
@@ -26,7 +27,11 @@ Route::middleware(['guest', 'throttle:3'])->group(function () {
     Route::post('/token', [\App\Http\Controllers\UserController::class, 'getToken'])->name('user.get_token');
 });
 
-Route::middleware(['auth:sanctum', 'throttle:' . config('api.requests_per_minute')])->group(function () {
+Route::middleware(['auth:sanctum', 'api.request', 'throttle:' . config('api.requests_per_minute')])->group(function () {
+    // Stats
+    Route::get('/stats', [StatisticController::class, 'total']);
+    Route::get('/my-stats', [StatisticController::class, 'my']);
+
     // Episodes
     Route::get('/episodes/', [EpisodeController::class, 'index']);
     Route::get('/episodes/{id}', [EpisodeController::class, 'show']);
