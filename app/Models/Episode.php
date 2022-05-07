@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Episode extends Model implements Transformable
 {
+    use \Backpack\CRUD\app\Models\Traits\CrudTrait;
     use HasFactory;
 
     /**
